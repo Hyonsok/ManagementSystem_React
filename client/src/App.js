@@ -9,6 +9,9 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import {withStyles} from '@material-ui/core/styles';
 
+
+// maintained the size 
+// created scroll bar if bigger
 const styles = theme => ({
   root: {
   width: '100%',
