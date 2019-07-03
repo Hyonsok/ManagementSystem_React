@@ -9,7 +9,6 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import {withStyles} from '@material-ui/core/styles';
 
-
 // maintained the size 
 // created scroll bar if bigger
 const styles = theme => ({
@@ -21,40 +20,26 @@ const styles = theme => ({
   table: {
     minWidth: 1080
   }
-})
-
-
-// by adding [], customers are in an array
-const customers = [
-{
-  'id' : 1,
-  'image' :  'https://placeimg.com/64/64/1', // place any random image site 64x64
-  'name' : 'Hyonsok',
-  'birthday' : '20190629',
-  'gender' : 'Male',
-  'job' : 'student'
-},
-{
-  'id' : 2,
-  'image' :  'https://placeimg.com/64/64/2', 
-  'name' : 'Alex ',
-  'birthday' : '20190630',
-  'gender' : 'Male',
-  'job' : 'student'
-},
-{
-  'id' : 3,
-  'image' :  'https://placeimg.com/64/64/3', // place any random image site 64x64
-  'name' : 'Claire',
-  'birthday' : '201900619',
-  'gender' : 'Female',
-  'job' : 'student'
-}
-]
+});
 
 // identified primary key which is customer.id
 // iterate the customers by using map
 class App extends Component{
+  state = {
+    customers: ""
+  }
+
+  componentDidMount() {
+    this.callApi()
+      .then(res => this.setState({customers: res}))
+      .catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
   render() {
     const {classes} = this.props;
     return (
@@ -73,7 +58,7 @@ class App extends Component{
             
           <TableBody>
           {
-            customers.map(c => {
+            this.state.customers ? this.state.customers.map(c => {
               return (<Customer 
                 key = {c.id}
                 id = {c.id}
@@ -83,8 +68,7 @@ class App extends Component{
                 gender = {c.gender}
                 job = {c.job}
               />);
-            })
-          }
+            }) : ""}
           </TableBody> 
         </Table>
       </Paper>
