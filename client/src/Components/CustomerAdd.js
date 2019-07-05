@@ -7,7 +7,7 @@ class CustomerAdd extends React.Component {
         super(props);
         this.state = {
             file:null,
-            id: '',
+            id:'',
             userName: '',
             birthday: '',
             gender: '',
@@ -25,17 +25,19 @@ class CustomerAdd extends React.Component {
         this.addCustomer()
             .then((response) => {
                 console.log(response.data);
+                // refresh the website to add a customer
+                this.props.stateRefresh();
             })
         this.setState({
             file: null,
-            id: '',
+            id:'',
             userName: '',
             birthday: '',
             gender: '',
             job: '',
             fileName: ''
         })
-        window.location.reload();
+        
     }
     
     handleFileChange(e){

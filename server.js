@@ -36,7 +36,7 @@ app.get('/api/customers', (req,res) => {
 app.use('/image', express.static('./upload'));
 
 app.post('/api/customers', upload.single('image'), (req,res) => {
-    let sql = 'INSERT INTO customers VALUES (null, ?, ?, ?, ?, ?, ?)';
+    let sql = 'INSERT INTO customers VALUES (?, ?, ?, ?, ?, ?)';
     let id = req.body.id;
     console.log(id);
     let image = '/image/' + req.file.filename;

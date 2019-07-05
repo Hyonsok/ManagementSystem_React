@@ -54,9 +54,23 @@ if props or state modified => shouldComponent()
 // identified primary key which is customer.id
 // iterate the customers by using map
 class App extends Component{
-  state = {
-    customers: "",
-    completed: 0
+  
+  constructor(props) {
+    super(props);
+    this.state ={
+      customers:'',
+      completed: 0
+    }
+  }
+
+  stateRefresh() {
+    this.setState({
+      customers:'',
+      completed: 0
+    });
+    this.callApi()
+      .then(res => this.setState({customers: res}))
+      .catch(err => console.log(err));
   }
 
   componentDidMount() {
@@ -115,7 +129,7 @@ class App extends Component{
             </TableBody> 
           </Table>
         </Paper>
-        <CustomerAdd/>
+        <CustomerAdd stateRefresh={this.stateRefresh}/>
       </div>
       );
     }
