@@ -7,38 +7,54 @@ class CustomerAdd extends React.Component {
         super(props);
         this.state = {
             file:null,
+            id: '',
             userName: '',
             birthday: '',
             gender: '',
             job: '',
             fileName: ''
         }
+        this.handleFormSubmit=this.handleFormSubmit.bind(this);
+        this.handleFileChange=this.handleFileChange.bind(this);
+        this.handleValueChange=this.handleValueChange.bind(this);
+        this.addCustomer=this.addCustomer.bind(this);
     }
 
-    handleFormSubmit = (e) => {
+    handleFormSubmit(e) {
         e.preventDefault()
         this.addCustomer()
             .then((response) => {
                 console.log(response.data);
             })
+        this.setState({
+            file: null,
+            id: '',
+            userName: '',
+            birthday: '',
+            gender: '',
+            job: '',
+            fileName: ''
+        })
+        window.location.reload();
     }
     
-    handleFileChange = (e) => {
+    handleFileChange(e){
         this.setState ({
             file: e.target.files[0],
             fileName: e.target.value
         })
     }
 
-    handleValueChange = (e) => {
+    handleValueChange(e){
         let nextState = {};
         nextState[e.target.name] = e.target.value;
         this.setState(nextState);
     }
 
-    addCustomer = () => {
+    addCustomer(){
         const url = '/api/customers';
         const formData = new FormData();
+        formData.append('id',this.state.id);
         formData.append('image',this.state.file);
         formData.append('name',this.state.userName);
         formData.append('birthday',this.state.birthday);
@@ -54,15 +70,16 @@ class CustomerAdd extends React.Component {
 
     render() {
         return (
-            <form onSumit = {this.handleFormSubmit}>
+            <form onSubmit = {this.handleFormSubmit}>
                 <h1>Add Customer</h1>
-                Profile image: <input type = "file" name="file" file = {this.state.file} value = {this.state.fileName} onChange = {this.handleFileChange}/><br/>
-                Name: <input type = "text" name = "userName" value={this.state.userName} onChange = {this.handleValueChange}/><br/>
-                Birthday = <input type = "text" name = "birthday" value = {this.state.birthday} onChange = {this.handleValueChange}/><br/>
-                Gender = <input type = "text" name = "gender" value = {this.state.gender} onChange = {this.handleValueChange}/><br/>
-                Job = <input type = "text" name = "job" value = {this.state.job} onChange = {this.handleValueChange}/><br/>
-                <button type ="submit">Submit</button>
-        </form>
+                ID: <input type="text" name = "id" value={this.state.id} onChange={this.handleValueChange}/><br/>
+                Profile image: <input type="file" name="file" file={this.state.file} value={this.state.fileName} onChange={this.handleFileChange}/><br/>
+                Name: <input type="text" name = "userName" value={this.state.userName} onChange={this.handleValueChange}/><br/>
+                Birthday = <input type="text" name = "birthday" value={this.state.birthday} onChange={this.handleValueChange}/><br/>
+                Gender = <input type="text" name = "gender" value={this.state.gender} onChange={this.handleValueChange}/><br/>
+                Job = <input type="text" name = "job" value={this.state.job} onChange={this.handleValueChange}/><br/>
+                <button type="submit">Submit</button>
+            </form>
         )
     }
 }

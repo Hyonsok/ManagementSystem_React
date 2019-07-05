@@ -84,7 +84,7 @@ class App extends Component{
           <Table className = {classes.table}>
               <TableHead>
                 <TableRow>
-                  <TableCell>Number</TableCell>
+                  <TableCell>ID</TableCell>
                   <TableCell>Image</TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>Birthday</TableCell>
@@ -103,8 +103,7 @@ class App extends Component{
                   name = {c.name}
                   birthday = {c.birthday}
                   gender = {c.gender}
-                  job = {c.job}
-                />);
+                  job = {c.job}/>);
               }) : 
               <TableRow>
                 <TableCell colSpan = "6" align = "center">
