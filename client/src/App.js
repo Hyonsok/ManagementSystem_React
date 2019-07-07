@@ -61,6 +61,7 @@ class App extends Component{
       customers:'',
       completed: 0
     }
+    this.stateRefresh = this.stateRefresh.bind(this);
   }
 
   stateRefresh() {
@@ -81,7 +82,7 @@ class App extends Component{
   }
 
   callApi = async () => {
-    const response = await fetch('/api/customers');
+    const response = await fetch ('/api/customers');
     const body = await response.json();
     return body;
   }
@@ -104,13 +105,15 @@ class App extends Component{
                   <TableCell>Birthday</TableCell>
                   <TableCell>Gender</TableCell>
                   <TableCell>Job</TableCell>
+                  <TableCell>Option</TableCell>
                 </TableRow>
               </TableHead>
               
             <TableBody>
             {
               this.state.customers ? this.state.customers.map(c => {
-                return (<Customer 
+                return (<Customer
+                  stateRefresh = {this.stateRefresh} 
                   key = {c.id}
                   id = {c.id}
                   image = {c.image}

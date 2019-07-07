@@ -11,6 +11,9 @@ const data = fs.readFileSync('./database.json');
 const conf = JSON.parse(data);
 const mysql = require('mysql');
 
+const multer = require('multer');
+const upload = multer({dest:'./upload'});
+
 const connection = mysql.createConnection({
     host: conf.host,
     user: conf.user,
@@ -21,22 +24,20 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-const multer = require('multer');
-const upload = multer({dest: './upload'})
 
 app.get('/api/customers', (req,res) => {
     connection.query(
-        'SELECT * FROM customers',
+        'SELECT * FROM customers WHERE isDeleted = 0',
         (err,rows, fields) => {
             res.send(rows);
         }
-    );
+    )
 });
 
 app.use('/image', express.static('./upload'));
 
 app.post('/api/customers', upload.single('image'), (req,res) => {
-    let sql = 'INSERT INTO customers VALUES (?, ?, ?, ?, ?, ?)';
+    let sql = 'INSERT INTO customers VALUES (?, ?, ?, ?, ?, ?, now(), 0)';
     let id = req.body.id;
     console.log(id);
     let image = '/image/' + req.file.filename;
@@ -55,5 +56,17 @@ app.post('/api/customers', upload.single('image'), (req,res) => {
         }    
     );
 });
+
+app.delete('/api/customers/:id', (req,res) => {
+    let sql = 'UPDATE customers SET isDeleted = 1 WHERE id = ?';
+    let params = [req.params.id];
+    connection.query(sql, params,
+        (err,rows,field) => {
+            res.send(rows);
+        }
+    )
+
+});
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
